@@ -1,5 +1,5 @@
 [package]
-name = "pdao-polkadot-near"
+name = "pdao-near-near"
 version = "0.0.1"
 authors = ["PDAO Team <hello@postech-dao.xyz>"]
 edition = '2021'
