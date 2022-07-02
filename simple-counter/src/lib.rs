@@ -1,3 +1,72 @@
+use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
+use near_sdk::collections::UnorderedMap;
+use near_sdk::collections::UnorderedSet;
+use near_sdk::{env, near_bindgen, AccountId};
+
+#[near_bindgen]
+#[derive(BorshDeserialize, BorshSerialize)]
+pub struct State {
+    count: u64,
+    auth: UnorderedMap<AccountIdHash, bool>,
+}
+
+pub type AccountIdHash = Vec<u8>;
+
+
+#[near_bindgen]
+impl State {
+    #[init]
+    pub fn new(count: u64) -> Self{
+        assert!(!env::state_exists(), "Already initialized");
+        Self {
+            count,
+            auth: UnorderedMap::new(b"Auth: ".to_vec()),
+        }
+    }
+
+    pub fn check_access(&self, account_id: AccountId) -> bool{
+        let account_hash = env::sha256(account_id.as_bytes());
+        return match self.auth.get(&account_hash) {
+            Some(status) => status,
+            None => false,
+        };
+    }
+
+    pub fn add_access(&mut self, account_id: AccountId) {
+        let account_hash = env::sha256(account_id.as_bytes());
+        self.auth.insert(&account_hash, &true);
+    }
+
+    pub fn remove_access(&mut self, account_id: AccountId){
+        let account_hash = env::sha256(account_id.as_bytes());
+        self.auth.remove(&account_hash);
+    }
+
+    pub fn get_num(&self) -> u64{
+        return self.count;
+    }
+
+    pub fn increment(&mut self){
+        self.only_auth();
+        self.count += 1;
+    }
+
+    pub fn decrement(&mut self){
+        self.only_auth();
+        self.count -= 1;
+    }
+
+    pub fn reset(&mut self){
+        self.only_auth();
+        self.count = 0;
+    }
+
+    fn only_auth(&mut self) {
+        if !self.check_access(env::predecessor_account_id()) {
+            env::panic(b"Access does not exist.");
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests{
