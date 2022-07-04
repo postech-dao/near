@@ -13,14 +13,19 @@ impl Config {
     pub fn read_from_env() -> Self {
         serde_json::from_str(
             &std::fs::read_to_string(
-                std::env::vars()
-                    .nth(1)
-                    .expect("Environment variable for the config file path is missing"),
+                std::env::var("ENVIRONMENT")
+                .expect("Environment variable for the config file path is missing"),
             )
             .expect("Failed to locate the config file"),
         )
         .expect("Failed to parse the config")
     }
+}
+
+#[test]
+fn check_configuration() {
+    let _config: Config = Config::read_from_env();
+    assert_eq!(_config.full_node_url.is_empty(), false)
 }
 
 #[tokio::test]
