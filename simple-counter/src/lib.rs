@@ -22,7 +22,7 @@ impl State {
         self.count += 1;
         let log_message = format!("Increased number to {}", self.count);
         env::log(log_message.as_bytes());
-        after_counter_change();
+
     }
 
     pub fn decrement(&mut self) {
@@ -30,7 +30,7 @@ impl State {
         self.count -= 1;
         let log_message = format!("Decreased number to {}", self.count);
         env::log(log_message.as_bytes());
-        after_counter_change();
+
     }
 
     pub fn reset(&mut self) {
