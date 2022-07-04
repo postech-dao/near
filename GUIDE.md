@@ -111,8 +111,8 @@ upstream의 repository도 원격입니다.
 ~/IdeaProjects/near $ git remote -v
 origin  https://github.com/happyhappy-jun/near.git (fetch)
 origin  https://github.com/happyhappy-jun/near.git (push)
-upstream        https://github.com/happyhappy-jun/near.git (fetch)
-upstream        https://github.com/happyhappy-jun/near.git (push)
+upstream        https://github.com/postech-dao/near.git (fetch)
+upstream        https://github.com/postech-dao/near.git (push)
 ```
 
 
