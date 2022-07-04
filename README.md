@@ -21,5 +21,5 @@ cargo clippy --all --all-targets --release
 
 ### Test
 ```
-cargo test -all
+ENVIRONMENT=.env cargo test -all
 ```
