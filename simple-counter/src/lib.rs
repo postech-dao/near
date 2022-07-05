@@ -40,7 +40,6 @@ impl State {
 #[cfg(test)]
 mod tests {
     use crate::State;
-    use std::io::ErrorKind;
 
     #[test]
     fn increment() {
