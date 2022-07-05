@@ -1,5 +1,5 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::{env, near_bindgen, AccountId};
+use near_sdk::near_bindgen;
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
@@ -11,7 +11,7 @@ pub struct State {
 #[near_bindgen]
 impl State {
     pub fn new(count: u64) -> Self {
-        State { count: count }
+        State { count }
     }
 
     pub fn get_num(&self) -> u64 {
@@ -33,33 +33,26 @@ impl State {
 
 #[cfg(test)]
 mod tests {
-    use near_sdk::{test_utils::VMContextBuilder, VMContext};
-
     use crate::State;
-
-    fn get_contract_context(input: Vec<u8>, is_view: bool) -> VMContext {
-        let vmContextBuilder = VMContextBuilder::new();
-        return vmContextBuilder.context;
-    }
 
     #[test]
     fn increment() {
-        /// Given
+        // Given
         let mut state: State = State::new(0);
         state.reset();
-        /// When
+        // When
         state.increment();
-        /// Then
+        // Then
         assert_eq!(1, state.get_num());
     }
 
     #[test]
     fn decrement() {
-        /// Given
+        // Given
         let mut state: State = State::new(1);
-        /// When
+        // When
         state.decrement();
-        /// Then
+        // Then
         assert_eq!(0, state.get_num());
     }
 
@@ -77,7 +70,7 @@ mod tests {
     #[should_panic]
     fn panics_on_overflow() {
         // Given
-        let mut state: State = State::new(u64::min_value() - 1);
+        let mut state: State = State::new(u64::max_value());
         // When
         state.increment();
         // Then
@@ -87,7 +80,7 @@ mod tests {
     #[should_panic]
     fn panic_on_underflow() {
         // Given
-        let mut state: State = State::new(0);
+        let mut state: State = State::new(u64::min_value());
         // When
         state.decrement();
         // Then
