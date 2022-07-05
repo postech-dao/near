@@ -1,5 +1,3 @@
-//Simple_counter
-
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::{env, near_bindgen, AccountId};
 
@@ -22,14 +20,12 @@ impl State {
         self.count += 1;
         let log_message = format!("Increased number to {}", self.count);
         env::log(log_message.as_bytes());
-
     }
     
     pub fn decrement(&mut self) {
         self.count -= 1;
         let log_message = format!("Decreased number to {}", self.count);
         env::log(log_message.as_bytes());
-
     }
 
     pub fn reset(&mut self) {
@@ -42,7 +38,6 @@ impl State {
 mod tests {
     #[test]
     fn increment() {
-         
         let context = get_context(vec![], false);
         testing_env!(context);
         let mut contract = State { val: 0 };
@@ -53,7 +48,6 @@ mod tests {
 
     #[test]
     fn decrement() {
-         
         let context = get_context(vec![], false);
         testing_env!(context);
         let mut contract = State { val: 1 };
@@ -64,7 +58,6 @@ mod tests {
 
     #[test]
     fn reset() {
-         
         let context = get_context(vec![], false);
         testing_env!(context);
         let mut contract = State { val: 100 };
@@ -76,7 +69,6 @@ mod tests {
     #[test]
     #[should_panic]
     fn panics_on_overflow() {
-         
         let mut contract = State {val:u64::MAX};
         contract.increment();
     }
@@ -84,9 +76,7 @@ mod tests {
     #[test]
     #[should_panic]
     fn panic_on_underflow() {
-         
         let mut contract = State {val:u64::MIN};
         contract.decrement();
     }
 }
-
