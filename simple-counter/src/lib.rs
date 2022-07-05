@@ -6,16 +6,12 @@ use near_sdk::{env, near_bindgen, AccountId};
 pub struct State {
     /// A counting number
     count: u64,
-    
 }
 
 #[near_bindgen]
 impl State {
-
     pub fn new(count: u64) -> Self {
-        State {
-            count: count
-        }
+        State { count: count }
     }
 
     pub fn get_num(&self) -> u64 {
@@ -23,69 +19,77 @@ impl State {
     }
 
     pub fn increment(&mut self) {
-        self.count+=1;
+        self.count += 1;
     }
 
     pub fn decrement(&mut self) {
-        self.count-=1
+        self.count -= 1
     }
 
     pub fn reset(&mut self) {
-        self.count=0
+        self.count = 0
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use near_sdk::{VMContext, test_utils::VMContextBuilder};
+    use near_sdk::{test_utils::VMContextBuilder, VMContext};
+
+    use crate::State;
 
     fn get_contract_context(input: Vec<u8>, is_view: bool) -> VMContext {
         let vmContextBuilder = VMContextBuilder::new();
-        return vmContextBuilder.context
+        return vmContextBuilder.context;
     }
-    
-
 
     #[test]
     fn increment() {
         /// Given
+        let mut state: State = State::new(0);
+        state.reset();
         /// When
+        state.increment();
         /// Then
-        assert_eq!(1, contract.get_num());
+        assert_eq!(1, state.get_num());
     }
 
     #[test]
     fn decrement() {
         /// Given
+        let mut state: State = State::new(1);
         /// When
+        state.decrement();
         /// Then
-        assert_eq!(0, contract.get_num());
+        assert_eq!(0, state.get_num());
     }
 
     #[test]
     fn reset() {
-        /// Given
-        /// When
-        /// Then
-        contract.reset();
-        assert_eq(0, contract.get_num());
+        // Given
+        let mut state: State = State::new(1);
+        // When
+        state.reset();
+        // Then
+        assert_eq!(0, state.get_num());
     }
 
     #[test]
     #[should_panic]
     fn panics_on_overflow() {
-        /// Given
-        /// When
-        /// Then
-        panic!(contract.increment());
+        // Given
+        let mut state: State = State::new(u64::min_value() - 1);
+        // When
+        state.increment();
+        // Then
     }
 
     #[test]
     #[should_panic]
     fn panic_on_underflow() {
-        /// Given
-        /// When
-        /// Then
-        panic!(contract.decrement());
+        // Given
+        let mut state: State = State::new(0);
+        // When
+        state.decrement();
+        // Then
     }
 }
