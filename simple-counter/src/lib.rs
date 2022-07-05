@@ -11,29 +11,37 @@ pub struct State {
 impl State {
     #[init]
     pub fn new(count: u64) -> Self {
-        return State { count: count };
+        State { count: count }
     }
 
     pub fn get_num(&self) -> u64 {
-        return self.count
+        self.count
     }
 
     pub fn increment(&mut self) {
         if self.count == u64::max_value() {
-            panic!("Overflow occured for count, count's current value: {}, max_value: {}", self.count, u64::max_value())
+            panic!(
+                "Overflow occured for count, count's current value: {}, max_value: {}",
+                self.count,
+                u64::max_value()
+            )
         }
-        self.count +=1;
+        self.count += 1;
     }
 
     pub fn decrement(&mut self) {
         if self.count == u64::min_value() {
-            panic!("Underflow occured for count, count's current value: {}, min_value: {}", self.count, u64::min_value())
+            panic!(
+                "Underflow occured for count, count's current value: {}, min_value: {}",
+                self.count,
+                u64::min_value()
+            )
         }
-        self.count -=1;
+        self.count -= 1;
     }
 
     pub fn reset(&mut self) {
-        self.count=0;
+        self.count = 0;
     }
 }
 
@@ -65,14 +73,18 @@ mod tests {
     #[test]
     #[should_panic]
     fn panics_on_overflow() {
-        let mut contract = State { count: u64::max_value() };
+        let mut contract = State {
+            count: u64::max_value(),
+        };
         contract.increment()
     }
 
     #[test]
     #[should_panic]
     fn panic_on_underflow() {
-        let mut contract = State { count: u64::min_value() };
+        let mut contract = State {
+            count: u64::min_value(),
+        };
         contract.decrement()
     }
 }
