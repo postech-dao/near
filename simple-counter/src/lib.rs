@@ -1,10 +1,12 @@
+//Simple_counter
+
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::{env, near_bindgen, AccountId};
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct State {
-    count: u64, // TODO,
+    count: u64,
 }
 
 #[near_bindgen]
@@ -13,20 +15,17 @@ impl State {
     pub fn new(count: u64) -> Self {}
 
     pub fn get_num(&self) -> u64 {
-        // TODO
         return self.count;
     }
 
     pub fn increment(&mut self) {
-        // TODO
         self.count += 1;
         let log_message = format!("Increased number to {}", self.count);
         env::log(log_message.as_bytes());
 
     }
-
+    
     pub fn decrement(&mut self) {
-        // TODO
         self.count -= 1;
         let log_message = format!("Decreased number to {}", self.count);
         env::log(log_message.as_bytes());
@@ -34,7 +33,6 @@ impl State {
     }
 
     pub fn reset(&mut self) {
-        // TODO
         self.count = 0;
         env::log(b"Reset counter to zero");
     }
@@ -44,7 +42,7 @@ impl State {
 mod tests {
     #[test]
     fn increment() {
-        // TODO
+         
         let context = get_context(vec![], false);
         testing_env!(context);
         let mut contract = State { val: 0 };
@@ -55,7 +53,7 @@ mod tests {
 
     #[test]
     fn decrement() {
-        // TODO
+         
         let context = get_context(vec![], false);
         testing_env!(context);
         let mut contract = State { val: 1 };
@@ -66,7 +64,7 @@ mod tests {
 
     #[test]
     fn reset() {
-        // TODO
+         
         let context = get_context(vec![], false);
         testing_env!(context);
         let mut contract = State { val: 100 };
@@ -78,16 +76,17 @@ mod tests {
     #[test]
     #[should_panic]
     fn panics_on_overflow() {
-        // TODO
-        let mut contract = State {val:9223372036854775807};
+         
+        let mut contract = State {val:u64::MAX};
         contract.increment();
     }
 
     #[test]
     #[should_panic]
     fn panic_on_underflow() {
-        // TODO
-        let mut contract = State {val = -9223372036854775808};
+         
+        let mut contract = State {val:u64::MIN};
         contract.decrement();
     }
 }
+
