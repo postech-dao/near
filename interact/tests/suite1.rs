@@ -13,9 +13,8 @@ impl Config {
     pub fn read_from_env() -> Self {
         serde_json::from_str(
             &std::fs::read_to_string(
-                std::env::args()
-                    .nth(1)
-                    .expect("Environment variable for the config file path is missing"),
+                std::env::var("TEST_CONFIG")
+                .expect("Environment variable for the config file path is missing"),
             )
             .expect("Failed to locate the config file"),
         )
