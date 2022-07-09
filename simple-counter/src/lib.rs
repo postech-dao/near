@@ -19,24 +19,10 @@ impl State {
     }
 
     pub fn increment(&mut self) {
-        if self.count == u64::max_value() {
-            panic!(
-                "Overflow occured for count, count's current value: {}, max_value: {}",
-                self.count,
-                u64::max_value()
-            )
-        }
         self.count += 1;
     }
 
     pub fn decrement(&mut self) {
-        if self.count == u64::min_value() {
-            panic!(
-                "Underflow occured for count, count's current value: {}, min_value: {}",
-                self.count,
-                u64::min_value()
-            )
-        }
         self.count -= 1;
     }
 
