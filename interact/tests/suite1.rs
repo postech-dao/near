@@ -28,7 +28,7 @@ impl Config {
 
 #[tokio::test]
 async fn check_connection() {
-    let _config = Config::read_from_env();
+    let config = Config::read_from_env();
     // check whether the full node is responding by a simple request
     let client = Client::new();
     let payload = json!({
@@ -39,14 +39,14 @@ async fn check_connection() {
     });
 
     let res = client
-        .post(&_config.test_node_url)
+        .post(&config.test_node_url)
         .json(&payload)
         .send()
         .await
         .unwrap();
 
     let json = res.json::<Value>().await.unwrap();
-    assert_eq!(json["result"]["chain_id"], _config.network_id);
+    assert_eq!(json["result"]["chain_id"], config.network_id);
 }
 
 #[tokio::test]
