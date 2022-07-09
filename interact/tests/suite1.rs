@@ -49,8 +49,8 @@ async fn check_account() {
 
 #[tokio::test]
 #[ignore]
-async fn upload_modify_and_query() {
+async fn modify_and_query() {
     let _config = Config::read_from_env();
-    // upload the contract, submit a transaction that modifies its state, and query the state
+    // view the contract, submit a transaction that modifies its state, and query the state
     unimplemented!();
 }
