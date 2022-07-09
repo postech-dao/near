@@ -1,7 +1,7 @@
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
-use std::{thread, time};
+use tokio::time::{sleep, Duration};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Config {
@@ -73,7 +73,7 @@ async fn check_block_number() {
 
     let first_json = first_res.json::<Value>().await.unwrap();
 
-    thread::sleep(time::Duration::from_secs(2));
+    sleep(Duration::from_secs(2)).await;
 
     let second_res = client
         .post(&_config.test_node_url)
