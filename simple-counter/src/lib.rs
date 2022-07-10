@@ -1,5 +1,5 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::{env, near_bindgen};
+use near_sdk::near_bindgen;
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
@@ -10,8 +10,8 @@ pub struct State {
 #[near_bindgen]
 impl State {
     #[init]
-    pub fn new(count: u64) -> Self {
-        State { count: count }
+    pub fn new(val: u64) -> Self {
+        State { count: val }
     }
 
     pub fn get_num(&self) -> u64 {
