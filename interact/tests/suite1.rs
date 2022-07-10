@@ -62,5 +62,3 @@ async fn modify_contract_state() {
     // view the contract, submit a transaction that modifies its state
     unimplemented!();
 }
-
-
