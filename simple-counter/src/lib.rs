@@ -10,16 +10,20 @@ pub struct Counter{
 #[near_bindgen]
 impl Counter{
 
+    //initiate
     #[init]
     pub fn new()-> Self{
 
-        assert!(env::state_read::<Self>().is_none(),"Already initialized");
+        assert!(env::state_read::<Self>().is_none(),"Already initialized"); //check arleady existed
         Self { 
-            user_counters: UnorderedMap::new(b"kmlee".to_vec()), 
+            user_counters: UnorderedMap::new(b"kmlee".to_vec()),  
         }
     }
+
     pub fn get_num(&self, account: String)->i16{
-        let caller_num = self.get_num_from_signer(account.clone());
+        let caller_num = self.get_num_from_signer(account.clone()); //return value signer have
+
+        //logging
         let log_message = format!("{}'s number: {}",account, caller_num);
         env::log(log_message.as_bytes());
         caller_num
@@ -28,40 +32,40 @@ impl Counter{
         match self.user_counters.get(&account) {
             Some(num) => {
                 num
-            },
+            },//if the user exist return num else 0
             None => 0
         }
     }
     pub fn increment(&mut self) {
-        // real smart contracts will want to have safety checks
         //let caller = env::signer_account_id();
         //use below line instead of below for test
         let caller = "kmlee".to_string();
-        let current_val = match self.user_counters.get(&caller) {
+        let current_val = match self.user_counters.get(&caller) { //get previous value
             Some(val) => val,
             None => 0i16
         };
-        let new_value = current_val + 1;
+        let new_value = current_val + 1; //increasing value
         self.user_counters.insert(&caller.clone(), &new_value);
+
+        //logging
         let log_message = format!("Incremented to {}", new_value);
         env::log(log_message.as_bytes());
-        after_counter_change();
     }
 
     pub fn decrement(&mut self) {
         //let caller = env::signer_account_id();
         //use below line instead of below for test
         let caller = "kmlee".to_string();
-        let current_val = match self.user_counters.get(&caller) {
+        let current_val = match self.user_counters.get(&caller) { //get previous value
             Some(val) => val,
             None => 0i16
         };
-        let new_value = current_val - 1;
+        let new_value = current_val - 1; //decreasing value
         self.user_counters.insert(&caller.clone(), &new_value);
 
+        //logging
         let log_message = format!("Decreased number to {}", new_value);
         env::log(log_message.as_bytes());
-        after_counter_change();
     }
 
     pub fn reset(&mut self) {
@@ -69,6 +73,8 @@ impl Counter{
         //use below line instead of below for test
         let caller = "kmlee".to_string();
         self.user_counters.insert(&caller, &0i16);
+
+        //logging
         env::log(b"Reset counter to zero");
     }
     pub fn delete(&mut self, k: String) {
@@ -77,9 +83,6 @@ impl Counter{
     }
 
     
-}
-fn after_counter_change() {
-    env::log(b"Make sure you don't overflow, my friend.");
 }
 
 #[cfg(test)]
@@ -91,8 +94,6 @@ mod tests {
     use near_sdk::json_types::ValidAccountId;
 
 
-    // part of writing unit tests is setting up a mock context
-    // this is also a useful list to peek at when wondering what's available in env::*
     fn get_context(predecessor_account_id:ValidAccountId,is_view: bool) -> VMContext{
         VMContextBuilder::new()
             .signer_account_id(predecessor_account_id.clone())
@@ -100,8 +101,6 @@ mod tests {
             .build()
     }
 
-    // mark individual unit tests with #[test] for them to be registered and fired
-    // unlike other frameworks, the function names don't need to be special or have "test" in it
     #[test]
     fn get_num(){
         let context = get_context(accounts(1),false);
