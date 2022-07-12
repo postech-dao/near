@@ -13,8 +13,13 @@ impl Config {
     pub fn read_from_env() -> Self {
         serde_json::from_str(
             &std::fs::read_to_string(
+<<<<<<< HEAD
                 std::env::var("ENVIRONMENT")
                 .expect("Environment variable for the config file path is missing"),
+=======
+                std::env::var("TEST_CONFIG")
+                    .expect("Environment variable for the config file path is missing"),
+>>>>>>> 148b834c355d2c7b613050cba51c84fb2758a540
             )
             .expect("Failed to locate the config file"),
         )
@@ -23,6 +28,7 @@ impl Config {
 }
 
 #[tokio::test]
+#[ignore]
 async fn check_connection() {
     //let data: Vec<String> = std::env::args().collect();
     let _config = Config::read_from_env();
@@ -31,6 +37,7 @@ async fn check_connection() {
 }
 
 #[tokio::test]
+#[ignore]
 async fn check_block_number() {
     let _config = Config::read_from_env();
     // check the latest block number recognized by the full node **twice** with some delay,
@@ -39,6 +46,7 @@ async fn check_block_number() {
 }
 
 #[tokio::test]
+#[ignore]
 async fn check_account() {
     let _config = Config::read_from_env();
     // by requesting the full node, check whether the account given by the config has enough native token to pay gas fee
@@ -46,8 +54,17 @@ async fn check_account() {
 }
 
 #[tokio::test]
-async fn upload_modify_and_query() {
+#[ignore]
+async fn query_contract_state() {
     let _config = Config::read_from_env();
-    // upload the contract, submit a transaction that modifies its state, and query the state
+    // view the contract, query its state
+    unimplemented!();
+}
+
+#[tokio::test]
+#[ignore]
+async fn modify_contract_state() {
+    let _config = Config::read_from_env();
+    // view the contract, submit a transaction that modifies its state
     unimplemented!();
 }
