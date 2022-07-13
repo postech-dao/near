@@ -5,7 +5,7 @@ use near_sdk::collections::UnorderedMap;
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct Counter{
-    user_counters: UnorderedMap<String, i16>,
+    user_counters: UnorderedMap<String, u64>,
 }
 #[near_bindgen]
 impl Counter{
@@ -20,7 +20,7 @@ impl Counter{
         }
     }
 
-    pub fn get_num(&self, account: String)->i16{
+    pub fn get_num(&self, account: String)->u64{
         let caller_num = self.get_num_from_signer(account.clone()); //return value signer have
 
         //logging
@@ -28,7 +28,7 @@ impl Counter{
         env::log(log_message.as_bytes());
         caller_num
     }
-    fn get_num_from_signer(&self, account: String) -> i16 {
+    fn get_num_from_signer(&self, account: String) -> u64 {
         match self.user_counters.get(&account) {
             Some(num) => {
                 num
@@ -42,7 +42,7 @@ impl Counter{
         let caller = "kmlee".to_string();
         let current_val = match self.user_counters.get(&caller) { //get previous value
             Some(val) => val,
-            None => 0i16
+            None => 0u64
         };
         let new_value = current_val + 1; //increasing value
         self.user_counters.insert(&caller.clone(), &new_value);
@@ -58,7 +58,7 @@ impl Counter{
         let caller = "kmlee".to_string();
         let current_val = match self.user_counters.get(&caller) { //get previous value
             Some(val) => val,
-            None => 0i16
+            None => 0u64
         };
         let new_value = current_val - 1; //decreasing value
         self.user_counters.insert(&caller.clone(), &new_value);
@@ -72,7 +72,7 @@ impl Counter{
         //let caller = env::signer_account_id();
         //use below line instead of below for test
         let caller = "kmlee".to_string();
-        self.user_counters.insert(&caller, &0i16);
+        self.user_counters.insert(&caller, &0u64);
 
         //logging
         env::log(b"Reset counter to zero");
