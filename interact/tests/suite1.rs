@@ -13,8 +13,13 @@ impl Config {
     pub fn read_from_env() -> Self {
         serde_json::from_str(
             &std::fs::read_to_string(
+<<<<<<< HEAD
+                std::env::var("ENVIRONMENT")
+                .expect("Environment variable for the config file path is missing"),
+=======
                 std::env::var("TEST_CONFIG")
                     .expect("Environment variable for the config file path is missing"),
+>>>>>>> 148b834c355d2c7b613050cba51c84fb2758a540
             )
             .expect("Failed to locate the config file"),
         )
@@ -25,8 +30,9 @@ impl Config {
 #[tokio::test]
 #[ignore]
 async fn check_connection() {
+    //let data: Vec<String> = std::env::args().collect();
     let _config = Config::read_from_env();
-    // check whether the full node is responding by a simple request
+    //println!("{:?}",data);
     unimplemented!();
 }
 

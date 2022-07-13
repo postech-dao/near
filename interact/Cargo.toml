@@ -6,7 +6,11 @@ edition = '2021'
 include = ["src/**/*", "Cargo.toml"]
 license = "MIT"
 readme = "../README.md"
+<<<<<<< HEAD
+repository = "https://github.com/kyungmin-postech/near"
+=======
 repository = "https://github.com/postech-dao/near"
+>>>>>>> 148b834c355d2c7b613050cba51c84fb2758a540
 
 [dependencies]
 serde = { version = "1.0", features = ["derive"] }
@@ -17,3 +21,7 @@ reqwest = "0.11"
 serde_json = "1.0"
 anyhow = "1.0"
 thiserror = "1.0"
+<<<<<<< HEAD
+near-sdk = "3.1.0"
+=======
+>>>>>>> 148b834c355d2c7b613050cba51c84fb2758a540
