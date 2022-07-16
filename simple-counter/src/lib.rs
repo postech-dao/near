@@ -87,7 +87,10 @@ impl State {
     pub fn get_num(&self) -> u64 {
         self.count
     }
-    // TODO: Query auth and count
+
+    pub fn get_auth(&self) -> Vec<AccountId> {
+        self.auth.to_vec()
+    }
 
 }
 
@@ -227,4 +230,18 @@ mod tests {
         state.decrement(transaction);
         // Then
     }
+
+    #[test]
+    fn get_auth() {
+        let context = get_contract_context(accounts(0));
+        testing_env!(context.build());
+        // Given
+        let auth = vec![accounts(0)];
+        let state: State = State::new(0, auth); 
+        // When
+        let auth = state.get_auth();
+        //Then
+        assert_eq!(auth, vec![accounts(0)]);
+    }
+
 }
