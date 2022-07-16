@@ -11,9 +11,10 @@ pub struct State {
     auth: UnorderedSet<AccountId> // An unordered map (instead of a list) would be proper as well
 }
 
-struct Transaction {
+#[derive(Serialize)]
+pub struct Transaction {
     value: u64,
-    from: AccountId
+    from: AccountId,
 }
 #[derive(BorshStorageKey, BorshSerialize)]
 enum UnorderedSetKey {
@@ -33,8 +34,12 @@ impl State {
         }
     }
 
-    fn increment(&mut self, transaction: Transaction) {
+    pub fn increment(&mut self, transaction: Transaction) {
         self._increment(transaction.value);
+    }
+    
+    pub fn decrement(&mut self, transaction: Transaction) {
+        self._decrement(transaction.value);
     }
 
     pub fn get_num(&self) -> u64 {
@@ -120,8 +125,12 @@ mod tests {
         // Given
         let auth = vec![accounts(0)];
         let mut state: State = State::new(1, auth);
+        let transaction = Transaction {
+            value: 1,
+            from: accounts(0),
+        };
         // When
-        state.decrement();
+        state.decrement(transaction);
         // Then
         assert_eq!(0, state.get_num());
     }
