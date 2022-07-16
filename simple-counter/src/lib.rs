@@ -25,47 +25,39 @@ enum UnorderedSetKey {
 #[near_bindgen]
 impl State {
     pub fn new(count: u64, auth: Vec<AccountId>) -> Self {
-        let mut authSet = UnorderedSet::new(UnorderedSetKey::AccountIdStorageKey);
+        let mut auth_set = UnorderedSet::new(UnorderedSetKey::AccountIdStorageKey);
         for element in auth {
-            authSet.insert(&element);
+            auth_set.insert(&element);
         }
         State {
-            count: count,
-            auth: authSet,
-        }
-    }
-    
-    fn isValidAuth(&self, account_id: &AccountId) -> bool {
-        if self.auth.contains(account_id) {
-            true
-        } else {
-            false
+            count,
+            auth: auth_set,
         }
     }
 
-    fn isValidValue(&self, value: u64) -> bool {
+    fn is_valid_auth(&self, account_id: &AccountId) -> bool {
+        self.auth.contains(account_id)
+    }
+
+    fn is_valid_value(&self, value: u64) -> bool {
         let max_value: u64 = 10;
-        if value > max_value {
-            false
-        } else {
-            true
-        }
+        value > max_value
     }
 
     pub fn increment(&mut self, transaction: Transaction) {
-        let isValidAuth = self.isValidAuth(&transaction.from);
-        let isValidValue = self.isValidValue(transaction.value);
-        if isValidAuth && isValidValue {
+        let is_valid_auth = self.is_valid_auth(&transaction.from);
+        let is_valid_value = self.is_valid_value(transaction.value);
+        if is_valid_auth && is_valid_value {
             self._increment(transaction.value);
-        } else { 
+        } else {
             panic!("invalid transaction")
         }
     }
-    
+
     pub fn decrement(&mut self, transaction: Transaction) {
-        let isValidAuth = self.isValidAuth(&transaction.from);
-        let isValidValue = self.isValidValue(transaction.value);
-        if isValidAuth && isValidValue {
+        let is_valid_auth = self.is_valid_auth(&transaction.from);
+        let is_valid_value = self.is_valid_value(transaction.value);
+        if is_valid_auth && is_valid_value {
             self._decrement(transaction.value);
         } else {
             panic!("invalid transaction")
@@ -80,8 +72,8 @@ impl State {
         self.count -= value;
     }
 
-    fn reset(&mut self) {
-        // TODO: Only auth could reset value.
+    // TODO: Only auth could reset value.
+    pub fn reset(&mut self) {
         self.count = 0
     }
     pub fn get_num(&self) -> u64 {
@@ -91,7 +83,6 @@ impl State {
     pub fn get_auth(&self) -> Vec<AccountId> {
         self.auth.to_vec()
     }
-
 }
 
 #[cfg(test)]
@@ -117,13 +108,13 @@ mod tests {
         let context = get_contract_context(accounts(0));
         testing_env!(context.build());
         // Given
-        let accountIdx0 = accounts(0);
-        let auth = vec![accountIdx0];
+        let account_idx0 = accounts(0);
+        let auth = vec![account_idx0];
         let mut state = State::new(0, auth);
-        let accountIdx1 = accounts(1);
+        let account_idx1 = accounts(1);
         let transaction = Transaction {
             value: 1,
-            from: accountIdx1
+            from: account_idx1,
         };
         // When
         state.increment(transaction);
@@ -136,12 +127,12 @@ mod tests {
         let context = get_contract_context(accounts(0));
         testing_env!(context.build());
         // Given
-        let accountIdx0 = accounts(0);
-        let auth = vec![accountIdx0];
+        let account_idx0 = accounts(0);
+        let auth = vec![account_idx0];
         let mut state = State::new(0, auth);
         let transaction = Transaction {
             value: 11,
-            from: accounts(0)
+            from: accounts(0),
         };
         // When
         state.increment(transaction)
@@ -153,8 +144,8 @@ mod tests {
         let context = get_contract_context(accounts(0));
         testing_env!(context.build());
         // Given
-        let accountIdx0 = accounts(0);
-        let auth = vec![accountIdx0];
+        let account_idx0 = accounts(0);
+        let auth = vec![account_idx0];
         let mut state: State = State::new(0, auth);
         let transaction = Transaction {
             value: 1,
@@ -237,11 +228,10 @@ mod tests {
         testing_env!(context.build());
         // Given
         let auth = vec![accounts(0)];
-        let state: State = State::new(0, auth); 
+        let state: State = State::new(0, auth);
         // When
         let auth = state.get_auth();
         //Then
         assert_eq!(auth, vec![accounts(0)]);
     }
-
 }
