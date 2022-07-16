@@ -33,12 +33,16 @@ impl State {
         }
     }
 
+    fn increment(&mut self, transaction: Transaction) {
+        self._increment(transaction.value);
+    }
+
     pub fn get_num(&self) -> u64 {
         self.count
     }
 
-    pub fn increment(&mut self) {
-        self.count += 1;
+    fn _increment(&mut self, value: u64) {
+        self.count += value;
     }
 
     pub fn decrement(&mut self) {
@@ -96,10 +100,15 @@ mod tests {
         let context = get_contract_context(accounts(0));
         testing_env!(context.build());
         // Given
-        let auth = vec![accounts(0)];
+        let accountIdx0 = accounts(0);
+        let auth = vec![accountIdx0];
         let mut state: State = State::new(0, auth);
+        let transaction = Transaction {
+            value: 1,
+            from: accounts(0),
+        };
         // When
-        state.increment();
+        state.increment(transaction);
         // Then
         assert_eq!(1, state.get_num());
     }
