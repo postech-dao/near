@@ -41,7 +41,7 @@ impl State {
 
     fn is_valid_value(&self, value: u64) -> bool {
         let max_value: u64 = 10;
-        value > max_value
+        value <= max_value
     }
 
     pub fn increment(&mut self, transaction: Transaction) {
