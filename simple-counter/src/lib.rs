@@ -36,31 +36,24 @@ impl State {
         this
     }
 
-    pub fn validate_transaction(&self, trans: &Transaction) -> bool {
-        self.authenticate_id(&trans.from) && State::check_transaction_value(trans.value)
-    }
-
-    pub fn authenticate_id(&self, from_account: &AccountId) -> bool {
-        if self.auth_ids.contains(from_account) {
-            true
-        } else {
+    pub fn validate_transaction(&self, trans: &Transaction) {
+        if !self.is_valid_auth_id(&trans.from) {
+            panic!("Validation failed: account {} not in auth_ids", &trans.from);
+        } else if !State::is_valid_transaction_value(trans.value) {
             panic!(
-                "Validation failed: account {} is not in auth_ids",
-                from_account
+                "Validation failed: transaction value {} is larger than max_transaction value",
+                trans.value
             );
         }
     }
 
-    pub fn check_transaction_value(value: u64) -> bool {
+    pub fn is_valid_auth_id(&self, from_account: &AccountId) -> bool {
+        self.auth_ids.contains(from_account)
+    }
+
+    pub fn is_valid_transaction_value(value: u64) -> bool {
         let max_transaction_value = 10;
-        if value <= max_transaction_value {
-            true
-        } else {
-            panic!(
-                "Validation failed: transaction value {} larger than max_transaction value {}",
-                value, max_transaction_value
-            )
-        }
+        value <= max_transaction_value
     }
 
     pub fn get_num(&self) -> u64 {
@@ -68,15 +61,13 @@ impl State {
     }
 
     pub fn increment(&mut self, trans: &Transaction) {
-        if self.validate_transaction(trans) {
-            self.count += trans.value;
-        }
+        self.validate_transaction(trans);
+        self.count += trans.value;
     }
 
     pub fn decrement(&mut self, trans: &Transaction) {
-        if self.validate_transaction(trans) {
-            self.count -= trans.value;
-        }
+        self.validate_transaction(trans);
+        self.count -= trans.value;
     }
 
     pub fn reset(&mut self) {
@@ -139,7 +130,7 @@ mod tests {
     }
 
     #[test]
-    #[should_panic]
+    #[should_panic(expected = "Validation failed: account bob not in auth_ids")]
     fn test_validate_auth() {
         let context = get_context(accounts(0));
         testing_env!(context.build());
@@ -153,7 +144,9 @@ mod tests {
     }
 
     #[test]
-    #[should_panic]
+    #[should_panic(
+        expected = "Validation failed: transaction value 100 is larger than max_transaction value"
+    )]
     fn test_validate_max_value() {
         let context = get_context(accounts(0));
         testing_env!(context.build());
