@@ -79,22 +79,10 @@ impl State {
 mod tests {
     use super::*;
     use crate::Transaction;
-    use near_sdk::test_utils::{accounts, VMContextBuilder};
-    use near_sdk::testing_env;
-
-    fn get_context(predecessor_account_id: AccountId) -> VMContextBuilder {
-        let mut builder = VMContextBuilder::new();
-        builder
-            .signer_account_id(predecessor_account_id.clone())
-            .predecessor_account_id(predecessor_account_id);
-        builder
-    }
+    use near_sdk::test_utils::accounts;
 
     #[test]
     fn increment() {
-        let context = get_context(accounts(0));
-        testing_env!(context.build());
-
         let auths = vec![accounts(0)];
         let mut contract = State::new(10, auths);
         let transaction = Transaction {
@@ -108,8 +96,6 @@ mod tests {
 
     #[test]
     fn decrement() {
-        let context = get_context(accounts(0));
-        testing_env!(context.build());
         let auths = vec![accounts(0)];
         let mut contract = State::new(10, auths);
         let transaction = Transaction {
@@ -132,8 +118,6 @@ mod tests {
     #[test]
     #[should_panic(expected = "Validation failed: account bob not in auth_ids")]
     fn test_validate_auth() {
-        let context = get_context(accounts(0));
-        testing_env!(context.build());
         let auths = vec![accounts(0)];
         let mut contract = State::new(10, auths);
         let transaction = Transaction {
@@ -148,8 +132,6 @@ mod tests {
         expected = "Validation failed: transaction value 100 is larger than max_transaction value"
     )]
     fn test_validate_max_value() {
-        let context = get_context(accounts(0));
-        testing_env!(context.build());
         let auths = vec![accounts(0)];
         let mut contract = State::new(10, auths);
         let transaction = Transaction {
