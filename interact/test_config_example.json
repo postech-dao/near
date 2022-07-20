@@ -1,5 +1,6 @@
 {
-    "full_node_url": "https://example.com",
+    "network_id": "testnet",
+    "test_node_url": "https://rpc.testnet.near.org",
     "account_public": "example.testnet.public",
     "account_private": "example.testnet.private",
     "wasm_binary_path": "example/path"
