@@ -37,9 +37,7 @@ impl Counter{
         }
     }
     pub fn increment(&mut self) {
-        //let caller = env::signer_account_id();
-        //use below line instead of below for test
-        let caller = "kmlee".to_string();
+        let caller = env::signer_account_id();
         let current_val = match self.user_counters.get(&caller) { //get previous value
             Some(val) => val,
             None => panic!("No accounts")
@@ -54,8 +52,6 @@ impl Counter{
 
     pub fn decrement(&mut self) {
         let caller = env::signer_account_id();
-        //use below line instead of below for test
-        let caller = "kmlee".to_string();
         let current_val = match self.user_counters.get(&caller) { //get previous value
             Some(val) => val,
             None =>panic!("No accounts")
@@ -69,9 +65,7 @@ impl Counter{
     }
 
     pub fn reset(&mut self) {
-        //let caller = env::signer_account_id();
-        //use below line instead of below for test
-        let caller = "kmlee".to_string();
+        let caller = env::signer_account_id();
         self.user_counters.insert(&caller, &0u64);
 
         //logging
