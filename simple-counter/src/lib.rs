@@ -33,7 +33,7 @@ impl Counter{
             Some(num) => {
                 num
             },//if the user exist return num else 0
-            None => 0
+            None => panic!("No accounts")
         }
     }
     pub fn increment(&mut self) {
@@ -42,7 +42,7 @@ impl Counter{
         let caller = "kmlee".to_string();
         let current_val = match self.user_counters.get(&caller) { //get previous value
             Some(val) => val,
-            None => 0u64
+            None => panic!("No accounts")
         };
         let new_value = current_val + 1; //increasing value
         self.user_counters.insert(&caller.clone(), &new_value);
@@ -53,12 +53,12 @@ impl Counter{
     }
 
     pub fn decrement(&mut self) {
-        //let caller = env::signer_account_id();
+        let caller = env::signer_account_id();
         //use below line instead of below for test
         let caller = "kmlee".to_string();
         let current_val = match self.user_counters.get(&caller) { //get previous value
             Some(val) => val,
-            None => 0u64
+            None =>panic!("No accounts")
         };
         let new_value = current_val - 1; //decreasing value
         self.user_counters.insert(&caller.clone(), &new_value);
@@ -131,10 +131,12 @@ mod tests {
         testing_env!(context);
         // instantiate a contract variable
         let mut contract = Counter::new();
+        contract.increment();
+        contract.increment();
         contract.decrement();
         println!("Value after decrement: {}", contract.get_num("kmlee".to_string()));
         // confirm that we received -1 when calling get_num
-        assert_eq!(-1, contract.get_num("kmlee".to_string()));
+        assert_eq!(1, contract.get_num("kmlee".to_string()));
     }
     #[test]
     fn reset() {
