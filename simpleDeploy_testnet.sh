@@ -15,7 +15,7 @@ echo
 echo "3. dev-deploy done."
 echo "account ID : dev-123-456 "
 
-echo "near call \$CONTRACT init --accountId \$CONTRACT"
+#echo "near call \$CONTRACT init --accountId \$CONTRACT"
 echo
 
 exit 0
