@@ -1,0 +1,24 @@
+{
+  "name": "near-colony-contract",
+  "description": "PDAO near colony chain contract",
+  "version": "1.0.0",
+  "license": "(MIT AND Apache-2.0)",
+  "packageManager": "yarn@3.2.2",
+  "scripts": {
+    "build": "npm run build:rustup && npm run build:cpwasm",
+    "build:rustup": "rustup target add wasm32-unknown-unknown && cargo build --workspace --exclude pdao-near-interact --target wasm32-unknown-unknown --release",
+    "build:cpwasm": "mkdir -p out && rm -f ./out/main.wasm && cp ./contract/target/wasm32-unknown-unknown/release/counter_contract.wasm ./out/main.wasm",
+    "deploy": "npm run build && near dev-deploy",
+    "start": "npm run deploy && echo The app is starting! && env-cmd -f ./neardev/dev-account.env parcel frontend/index.html --open",
+    "test": "npm run build && npm run test:unit && npm run test:integration",
+    "test:unit": "cd contract && cargo test",
+    "test:integration": "cd integration-tests && cargo run --example integration-tests"
+  },
+  "devDependencies": {
+    "near-cli": "^3.2.0",
+    "near-workspaces": "^3.1.0"
+  },
+  "dependencies": {
+    "near-api-js": "^0.44.2"
+  }
+}
