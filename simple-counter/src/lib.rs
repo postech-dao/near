@@ -21,6 +21,14 @@ pub enum StorageKey {
     AuthAccount,
 }
 
+impl Default for State {
+    fn default() ->Self {
+        Self {
+            count: 0,
+            auth_ids: UnorderedSet::new(StorageKey::AuthAccount),
+        }
+    }
+}
 #[near_bindgen]
 impl State {
     #[init]
