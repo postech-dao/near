@@ -21,6 +21,14 @@ pub enum StorageKey {
     AuthAccount,
 }
 
+impl Default for State {
+    fn default() ->Self {
+        Self {
+            count: 0,
+            auth_ids: UnorderedSet::new(StorageKey::AuthAccount),
+        }
+    }
+}
 #[near_bindgen]
 impl State {
     #[init]
@@ -84,7 +92,7 @@ mod tests {
     #[test]
     fn increment() {
         let auths = vec![accounts(0)];
-        let mut contract = State::new(10, auths);
+        let mut contract = State::default();
         let transaction = Transaction {
             from: accounts(0),
             value: 5,
@@ -97,7 +105,7 @@ mod tests {
     #[test]
     fn decrement() {
         let auths = vec![accounts(0)];
-        let mut contract = State::new(10, auths);
+        let mut contract = State::default();
         let transaction = Transaction {
             from: accounts(0),
             value: 5,
@@ -110,7 +118,7 @@ mod tests {
     #[test]
     fn reset() {
         let auths = vec![accounts(0)];
-        let mut contract = State::new(10, auths);
+        let mut contract = State::default();
         contract.reset();
         assert_eq!(0, contract.get_num());
     }
@@ -119,7 +127,7 @@ mod tests {
     #[should_panic(expected = "Validation failed: account bob not in auth_ids")]
     fn test_validate_auth() {
         let auths = vec![accounts(0)];
-        let mut contract = State::new(10, auths);
+        let mut contract = State::default();
         let transaction = Transaction {
             from: accounts(1),
             value: 5,
@@ -133,7 +141,7 @@ mod tests {
     )]
     fn test_validate_max_value() {
         let auths = vec![accounts(0)];
-        let mut contract = State::new(10, auths);
+        let mut contract = State::default();
         let transaction = Transaction {
             from: accounts(0),
             value: 100,
