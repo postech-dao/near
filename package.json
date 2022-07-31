@@ -1,7 +1,7 @@
 {
-  "name": "near-colony-contract",
-  "description": "PDAO near colony chain contract",
-  "version": "1.0.0",
+  "name": "near",
+  "description": "PDAO NEAR Project",
+  "version": "0.1.0",
   "license": "(MIT AND Apache-2.0)",
   "packageManager": "yarn@3.2.2",
   "scripts": {

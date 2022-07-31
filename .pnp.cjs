@@ -17,14 +17,14 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
     ],\
     "dependencyTreeRoots": [\
       {\
-        "name": "near-colony-contract",\
+        "name": "near",\
         "reference": "workspace:."\
       }\
     ],\
     "enableTopLevelFallback": true,\
     "ignorePatternData": "(^(?:\\\\.yarn\\\\/sdks(?:\\\\/(?!\\\\.{1,2}(?:\\\\/|$))(?:(?:(?!(?:^|\\\\/)\\\\.{1,2}(?:\\\\/|$)).)*?)|$))$)",\
     "fallbackExclusionList": [\
-      ["near-colony-contract", ["workspace:."]]\
+      ["near", ["workspace:."]]\
     ],\
     "fallbackPool": [\
     ],\
@@ -2472,6 +2472,18 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["near", [\
+        ["workspace:.", {\
+          "packageLocation": "./",\
+          "packageDependencies": [\
+            ["near", "workspace:."],\
+            ["near-api-js", "npm:0.44.2"],\
+            ["near-cli", "npm:3.4.0"],\
+            ["near-workspaces", "npm:3.1.0"]\
+          ],\
+          "linkType": "SOFT"\
+        }]\
+      ]],\
       ["near-api-js", [\
         ["npm:0.44.2", {\
           "packageLocation": "./.yarn/cache/near-api-js-npm-0.44.2-8cc393c2f8-d63625ab83.zip/node_modules/near-api-js/",\
@@ -2520,18 +2532,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["yargs", "npm:16.2.0"]\
           ],\
           "linkType": "HARD"\
-        }]\
-      ]],\
-      ["near-colony-contract", [\
-        ["workspace:.", {\
-          "packageLocation": "./",\
-          "packageDependencies": [\
-            ["near-colony-contract", "workspace:."],\
-            ["near-api-js", "npm:0.44.2"],\
-            ["near-cli", "npm:3.4.0"],\
-            ["near-workspaces", "npm:3.1.0"]\
-          ],\
-          "linkType": "SOFT"\
         }]\
       ]],\
       ["near-hd-key", [\

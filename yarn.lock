@@ -2220,16 +2220,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"near-colony-contract@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "near-colony-contract@workspace:."
-  dependencies:
-    near-api-js: ^0.44.2
-    near-cli: ^3.2.0
-    near-workspaces: ^3.1.0
-  languageName: unknown
-  linkType: soft
-
 "near-hd-key@npm:^1.2.1":
   version: 1.2.1
   resolution: "near-hd-key@npm:1.2.1"
@@ -2312,6 +2302,16 @@ __metadata:
   checksum: a2a048472f7afaf35b3aa705de26a751c0b3b2428bbfb398b422d3dee18163c4bfd2a876156cb69b340708ba1c3e0af2155192db2171ff8e5552cdd81d263734
   languageName: node
   linkType: hard
+
+"near@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "near@workspace:."
+  dependencies:
+    near-api-js: ^0.44.2
+    near-cli: ^3.2.0
+    near-workspaces: ^3.1.0
+  languageName: unknown
+  linkType: soft
 
 "negotiator@npm:^0.6.3":
   version: 0.6.3
