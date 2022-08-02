@@ -2,5 +2,6 @@
 members = [
     "simple-counter",
     "interact",
-    "colony-chain"
+    "colony-chain",
+    "treasury"
 ]
