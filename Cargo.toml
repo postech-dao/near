@@ -4,5 +4,6 @@ members = [
     "interact",
     "colony-chain",
     "treasury",
-    "light-client"
+    "light-client",
+    "whale"
 ]
