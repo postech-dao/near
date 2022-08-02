@@ -6,9 +6,9 @@
   "packageManager": "yarn@3.2.2",
   "scripts": {
     "build": "yarn run build:rustup && yarn run build:cpwasm",
-    "build:rustup": "rustup target add wasm32-unknown-unknown && cargo build --workspace --exclude pdao-near-interact --target wasm32-unknown-unknown --release",
+    "build:rustup": "rustup target add wasm32-unknown-unknown && cargo build --workspace --release",
     "build:cpwasm": "mkdir -p out && rm -f ./out/main.wasm && cp ./target/wasm32-unknown-unknown/release/pdao_near_simple_counter.wasm ./out/main.wasm",
-    "deploy": "npm run build && near dev-deploy",
+    "deploy": "yarn run build && near dev-deploy",
     "test": "TEST_CONFIG=test_config_example.json cargo test --all"
   },
   "devDependencies": {
