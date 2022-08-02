@@ -3,5 +3,6 @@ members = [
     "simple-counter",
     "interact",
     "colony-chain",
-    "treasury"
+    "treasury",
+    "light-client"
 ]
