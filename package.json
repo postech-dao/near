@@ -5,11 +5,14 @@
   "license": "(MIT AND Apache-2.0)",
   "packageManager": "yarn@3.2.2",
   "scripts": {
-    "build": "yarn run build:rustup && yarn run build:cpwasm",
-    "build:rustup": "rustup target add wasm32-unknown-unknown && cargo build --workspace --release",
+    "build": "yarn build:nowasm && yarn build:rustup && yarn build:cpwasm",
+    "build:nowasm": "cargo build --workspace --exclude pdao-near-simple-counter --release",
+    "build:rustup": "rustup target add wasm32-unknown-unknown && cargo build --package pdao-near-simple-counter --target wasm32-unknown-unknown --release",
     "build:cpwasm": "mkdir -p out && rm -f ./out/main.wasm && cp ./target/wasm32-unknown-unknown/release/pdao_near_simple_counter.wasm ./out/main.wasm",
-    "deploy": "yarn run build && near dev-deploy",
-    "test": "TEST_CONFIG=test_config_example.json cargo test --all"
+    "deploy": "yarn build && near dev-deploy",
+    "format": "cargo +nightly fmt",
+    "test:lint": "cargo clippy --all --all-targets --release",
+    "test:unit": "TEST_CONFIG=test_config_example.json cargo test --all"
   },
   "devDependencies": {
     "near-cli": "^3.4.0",
