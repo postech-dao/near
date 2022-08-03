@@ -1,0 +1,57 @@
+name: Node CI
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '*.md'
+      - 'docs/**'
+  pull_request: { }
+  workflow_dispatch: { }
+
+
+jobs:
+  chore:
+    name: 'Testing chores'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+          components: clippy, rustfmt
+
+      - name: 'Use Node.js 16.x'
+        uses: actions/setup-node@master
+        with:
+          node-version: 16.x
+
+      - run: yarn test:lint
+      - run: yarn format --all -- --check
+
+  test:
+    name: 'Testing rust side'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+          override: true
+
+      - name: 'Use Node.js 16.x'
+        uses: actions/setup-node@master
+        with:
+          node-version: 16.x
+
+      - run: yarn test:unit
