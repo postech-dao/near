@@ -6,20 +6,25 @@
 ## Run
 ### Build
 ```
-cargo build --all
+yarn build
 ```
 
-### Format
+### Deploy
 ```
-cargo +nightly fmt
+yarn deploy
+```
+
+### Check Format
+```
+yarn format
 ```
 
 ### Lint
 ```
-cargo clippy --all --all-targets --release
+yarn test:lint
 ```
 
 ### Test
 ```
-TEST_CONFIG=test_config_example.json cargo test --all
+yarn test:unit
 ```
