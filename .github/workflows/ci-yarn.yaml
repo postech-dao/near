@@ -33,7 +33,7 @@ jobs:
           node-version: 16.x
 
       - run: yarn test:lint
-      - run: yarn format --all -- --check
+      - run: yarn format
 
   test:
     name: 'Testing rust side'
