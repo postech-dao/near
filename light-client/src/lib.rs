@@ -1,6 +1,6 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::near_bindgen;
-use pbc_contract_common::LightClientUpdateMessage;
+use pdao_colony_contract_common::LightClientUpdateMessage;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 /// TODO: replace this with the proper type.
@@ -68,7 +68,7 @@ impl LightClient {
 #[cfg(test)]
 mod tests {
     use crate::LightClient;
-    use pbc_contract_common::LightClientUpdateMessage;
+    use pdao_colony_contract_common::LightClientUpdateMessage;
 
     #[test]
     fn update() {
