@@ -11,7 +11,6 @@ class TsInteract {
     this.app.use(express.json());
     this.port = port;
     this.root();
-    this.dummy();
     this.listen();
   }
 
@@ -19,18 +18,6 @@ class TsInteract {
     this.app.get("/", (req: express.Request, res: express.Response) => {
       res.send("Hello ts-interact");
     });
-  }
-
-  public dummy() {
-    this.app.post("/dummy", (req: express.Request, res: express.Response) => {
-      const arg = req.body;
-      console.log(arg);
-      res.json(this.echo(arg.a, arg.b, arg.c));
-    });
-  }
-
-  private echo(a: number, b: string, c: number[]) {
-    return { a, b, c };
   }
 
   public listen() {
