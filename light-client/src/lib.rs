@@ -1,15 +1,10 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
-use near_sdk::{near_bindgen, BorshStorageKey};
+use near_sdk::{near_bindgen};
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct LightClient {
     pub light_client: pdao_colony_contract_common::LightClient,
-}
-
-#[derive(BorshStorageKey, BorshSerialize)]
-pub enum StorageKey {
-    LightClient,
 }
 
 impl Default for LightClient {

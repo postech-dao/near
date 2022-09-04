@@ -14,8 +14,8 @@ serde_json = "1.0"
 anyhow = "1.0"
 thiserror = "1.0"
 near-sdk = "4.0.0"
-pdao-colony-contract-common = { version = "0.1.0" }
-pdao-beacon-chain-common = { version = "0.0.0" }
+pdao-colony-contract-common = { version = "0.1.1", features = ["near"]}
+pdao-beacon-chain-common = { version = "0.0.1" }
 
 [lib]
 crate-type = ["cdylib", "rlib"]
