@@ -1,15 +1,17 @@
-import request from 'supertest'
-import Interact from './Interact'
-import {homedir} from "os";
-import {getConfig} from "./config";
-import {connect, keyStores} from "near-api-js";
-import InteractService from "./InteractService";
+import request from 'supertest';
+import Interact from './Interact';
+import {homedir} from 'os';
+import {getConfig} from './config';
+import {connect, keyStores} from 'near-api-js';
+import InteractService from './InteractService';
 
-const keyStore = new keyStores.UnencryptedFileSystemKeyStore(`${homedir()}/.near-credentials`);
-const nearConfig = getConfig("testnet", keyStore)
+const keyStore = new keyStores.UnencryptedFileSystemKeyStore(
+  `${homedir()}/.near-credentials`
+);
+const nearConfig = getConfig('testnet', keyStore);
 
-const near = await connect(nearConfig)
-const account = await near.account("happyhappy.testnet")
+const near = await connect(nearConfig);
+const account = await near.account('happyhappy.testnet');
 
 const interactService = new InteractService(near, account);
 
