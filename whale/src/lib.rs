@@ -68,8 +68,13 @@ impl WhaleContract {
     }
 
     pub fn transfer_whale(&mut self, receiver_id: AccountId, amount: U128, memo: Option<String>) {
-        //before transfer validate with lightclient
-        self.validate_with_lightclient();
+        // check enough amout to transfer
+        let owner_id = env::predecessor_account_id();
+        let owner_balance = self.token.ft_balance_of(owner_id);
+        if owner_balance < amount {
+            env::panic_str("Not enough balance to transfer");
+        }
+
         // use FungibleTokenCore::ft_transfer for internal transfer
         self.token.ft_transfer(receiver_id, amount, memo);
     }
@@ -82,6 +87,14 @@ impl WhaleContract {
         memo: Option<String>,
         msg: String,
     ) -> PromiseOrValue<U128> {
+        // check enough amout to transfer
+        let owner_id = env::predecessor_account_id();
+        let owner_balance = self.token.ft_balance_of(owner_id);
+        if owner_balance < amount {
+            env::panic_str("Not enough balance to transfer");
+        }
+
+        // use FungibleTokenCore::ft_transfer for internal transfer
         self.validate_with_lightclient();
         self.token.ft_transfer_call(receiver_id, amount, memo, msg)
     }
@@ -89,6 +102,13 @@ impl WhaleContract {
     pub fn burn(&mut self, account_id: AccountId, amount: U128) {
         // validate with lightclient
         self.validate_with_lightclient();
+
+        // check enough amount to burn
+        let owner_balance = self.token.ft_balance_of(account_id.clone());
+        if owner_balance < amount {
+            env::panic_str("Not enough balance to burn");
+        }
+
         self.token.internal_withdraw(&account_id, amount.into());
 
         //log burn
@@ -228,8 +248,12 @@ mod tests {
             .attached_deposit(125 * env::storage_byte_cost())
             .build());
         contract.mint_whale(accounts(0), 1_000_000.into());
+        assert_eq!(contract.query_total_supply(), 1_000_000.into());
+
         contract.burn(accounts(0), 500_000.into());
         assert_eq!(contract.ft_balance_of(accounts(0)), 500_000.into());
+
+        assert_eq!(contract.query_total_supply(), 500_000.into());
     }
 
     #[test]
