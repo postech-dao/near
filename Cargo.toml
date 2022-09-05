@@ -5,5 +5,5 @@ members = [
     "colony-chain",
     "treasury",
     "light-client",
-    "whale"
+    "pophin"
 ]
