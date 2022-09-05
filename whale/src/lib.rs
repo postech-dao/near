@@ -36,6 +36,17 @@ impl WhaleContract {
         }
     }
 
+    /// return total supply
+    pub fn query_total_supply(&mut self) -> U128 {
+        self.ft_total_supply()
+    }
+
+    /// return onwner's balance
+    pub fn query_balance(&mut self) -> U128 {
+        let owner_id = env::predecessor_account_id();
+        self.token.ft_balance_of(owner_id)
+    }
+
     pub fn mint_whale(&mut self, receiver_id: AccountId, amount: U128) {
         //before minting validate with lightclient
         self.validate_with_lightclient();
@@ -136,7 +147,31 @@ mod tests {
     }
 
     #[test]
-    fn test_minting() {
+    fn query_total_supply() {
+        let mut context = VMContextBuilder::new();
+        testing_env!(context.build());
+        let mut contract = WhaleContract::new();
+        testing_env!(context
+            .attached_deposit(125 * env::storage_byte_cost())
+            .build());
+        contract.mint_whale(accounts(0), 1_000_000.into());
+        assert_eq!(contract.query_total_supply(), 1_000_000.into());
+    }
+
+    #[test]
+    fn get_balance() {
+        let mut context = get_context(accounts(0));
+        testing_env!(context.build());
+        let mut contract = WhaleContract::new();
+        testing_env!(context
+            .attached_deposit(125 * env::storage_byte_cost())
+            .build());
+        contract.mint_whale(accounts(0), 1_000_000.into());
+        assert_eq!(contract.query_balance(), 1_000_000.into());
+    }
+
+    #[test]
+    fn mint_token() {
         let mut context = VMContextBuilder::new();
         testing_env!(context.build());
         let mut contract = WhaleContract::new();
