@@ -4,7 +4,7 @@ use near_contract_standards::fungible_token::metadata::{
 use near_contract_standards::fungible_token::{events, FungibleToken};
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::json_types::U128;
-use near_sdk::{near_bindgen, AccountId, PanicOnDefault, PromiseOrValue};
+use near_sdk::{env, near_bindgen, AccountId, PanicOnDefault, PromiseOrValue};
 
 #[near_bindgen]
 #[derive(BorshDeserialize, BorshSerialize, PanicOnDefault)]
@@ -19,7 +19,7 @@ pub struct WhaleContract {
 near_contract_standards::impl_fungible_token_core!(WhaleContract, token);
 near_contract_standards::impl_fungible_token_storage!(WhaleContract, token);
 
-///TODO: replace PDAO's whale icon
+/// TODO: replace PDAO's whale icon
 const PDAO_WHALE_ICON: &str = "PDAO WHALE ICON ADRESSS";
 
 #[near_bindgen]
@@ -29,8 +29,8 @@ impl WhaleContract {
     pub fn new() -> Self {
         Self {
             token: FungibleToken::new(b"w".to_vec()),
-            decimals: 8,
-            name: "PDAO_meme_token-Whale".to_string(),
+            decimals: 24,
+            name: "PDAO_meme_token_Whale".to_string(),
             symbol: "PDAO-WHALE".to_string(),
             icon: Some(PDAO_WHALE_ICON.to_string()),
         }
@@ -48,7 +48,7 @@ impl WhaleContract {
     }
 
     pub fn mint_whale(&mut self, receiver_id: AccountId, amount: U128) {
-        //before minting validate with lightclient
+        // before minting validate with lightclient
         self.validate_with_lightclient();
 
         if self.token.accounts.get(&receiver_id).is_none() {
@@ -111,7 +111,7 @@ impl WhaleContract {
 
         self.token.internal_withdraw(&account_id, amount.into());
 
-        //log burn
+        // log burn
         events::FtBurn {
             owner_id: &account_id,
             amount: &amount,
@@ -123,7 +123,7 @@ impl WhaleContract {
 
 impl WhaleContract {
     fn validate_with_lightclient(&self) {
-        //todo
+        // todo
     }
 }
 
@@ -167,7 +167,7 @@ mod tests {
     }
 
     #[test]
-    fn query_total_supply() {
+    fn get_total_supply() {
         let mut context = VMContextBuilder::new();
         testing_env!(context.build());
         let mut contract = WhaleContract::new();
@@ -203,7 +203,7 @@ mod tests {
     }
 
     #[test]
-    fn test_transfer() {
+    fn transfer_token() {
         let mut context = get_context(accounts(2));
         testing_env!(context.build());
         let mut contract = WhaleContract::new();
@@ -240,7 +240,7 @@ mod tests {
     }
 
     #[test]
-    fn test_burn() {
+    fn burn_token() {
         let mut context = VMContextBuilder::new();
         testing_env!(context.build());
         let mut contract = WhaleContract::new();
@@ -256,8 +256,9 @@ mod tests {
         assert_eq!(contract.query_total_supply(), 500_000.into());
     }
 
+    /// test for serveral minting to a specific account.
     #[test]
-    fn double_minting() {
+    fn mint_twice() {
         let mut context = VMContextBuilder::new();
         testing_env!(context.build());
         let mut contract = WhaleContract::new();
