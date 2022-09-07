@@ -32,9 +32,12 @@ impl LightClient {
         }
     }
 
-    pub fn update(&mut self, header: pdao_colony_contract_common::Header) {
-        self.light_client.height += 1;
-        self.light_client.last_header = header;
+    pub fn update(
+        &mut self,
+        header: pdao_colony_contract_common::Header,
+        proof: pdao_colony_contract_common::BlockFinalizationProof,
+    ) {
+        self.light_client.update(header, proof);
     }
 
     pub fn get_header(&self) -> pdao_colony_contract_common::Header {
@@ -58,11 +61,24 @@ mod tests {
     use crate::LightClient;
 
     #[test]
-    fn test_update() {
+    fn test_update_valid() {
         let header = "new_last_header".to_string();
+        let valid_proof = "valid".to_string();
         let mut light_client_contract = LightClient::new();
-        light_client_contract.update(header);
+        light_client_contract.update(header, valid_proof);
         assert_eq!(
+            light_client_contract.light_client.last_header,
+            "new_last_header".to_string()
+        )
+    }
+
+    #[test]
+    fn test_update_invalid() {
+        let header = "new_last_header".to_string();
+        let invalid_proof = "invalid".to_string();
+        let mut light_client_contract = LightClient::new();
+        light_client_contract.update(header, invalid_proof);
+        assert_ne!(
             light_client_contract.light_client.last_header,
             "new_last_header".to_string()
         )
