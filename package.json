@@ -12,13 +12,41 @@
     "deploy": "yarn build && near dev-deploy",
     "format": "cargo fmt --all -- --check",
     "test:lint": "cargo clippy --all --all-targets --release",
-    "test:unit": "TEST_CONFIG=test_config_example.json cargo test --all"
+    "test:unit": "TEST_CONFIG=test_config_example.json cargo test --all",
+    "js:start": "tsc -p js-interact && node js-interact/dist/index.js",
+    "js:test": "cd js-interact && jest --detectOpenHandles"
   },
   "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/jest": "^28.1.6",
+    "jest": "^28.1.3",
     "near-cli": "^3.4.0",
-    "near-workspaces": "^3.1.0"
+    "near-workspaces": "^3.1.0",
+    "supertest": "^6.2.4",
+    "ts-jest": "^28.0.7",
+    "tslib": "^2.4.0",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
+    "express": "^4.18.1",
     "near-api-js": "^0.44.2"
+  },
+  "jest": {
+    "transform": {
+        "^.+\\.ts$": "ts-jest"
+    },
+    "testRegex": "\\.test\\.ts$",
+    "moduleFileExtensions": [
+        "ts",
+        "tsx",
+        "js",
+        "json"
+    ],
+    "globals": {
+        "ts-jest": {
+            "diagnostics": true,
+            "tsconfig": "tsconfig.json"
+        }
+    }
   }
 }
